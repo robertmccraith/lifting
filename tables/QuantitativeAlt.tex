@@ -1,0 +1,37 @@
+\begin{table*}[t]
+\newcommand{\zero}{ZERO}
+\centering
+\setlength{\tabcolsep}{1mm}
+\begin{tabular}{cc c c c  c c c}
+\toprule
+&\multirow{3}{*}{Method} & \multicolumn{3}{c}{Annotations Source} & \multicolumn{3}{c}{AP\textsubscript{BEV}~/~AP\textsubscript{3D} (IoU = 0.5)} \\
+&& \textbf{2D} & \multicolumn{2}{c}{\textbf{3D}}  \\
+&& Boxes & Yaw & Boxes & Easy & Moderate & Hard \\
+\cmidrule(r){1-2}
+\cmidrule(lr){3-3}
+\cmidrule(lr){4-5}
+\cmidrule(l){6-8}
+% \multirow{3}{*}{\textit{\makecell{ Weakly \\ supervised}}}
+%   &PCL~\cite{tang2018pcl}      &  & & & 1.878 /- &1.058 /- &0.935 /- \\
+%   &OICR~\cite{tang2017oicr}    &  & & & 6.481 /- &2.933 /- &3.270 /- \\
+%   &MELM~\cite{wan2018min}      &  & & & 2.796 /- &1.486 /- &1.476 /- \\
+%     \hline
+%   &VS3D\cite{meng2020ws3d} & Mono   & 2d box,Yaw & 76.93 / 31.35 & 71.84 / 23.92 & 59.39 / 19.34 \\
+%   &VS3D\cite{meng2020ws3d} & Stereo & 2d box,Yaw & 79.03 / 40.98 & 72.71 / 34.09 & 59.77 / 27.65 \\
+%   &VS3D\cite{meng2020ws3d} & Mono + LiDAR    & Yaw from Image & 81.60 / 41.83 & 72.43 / 39.22 & 64.31 / 32.73 \\
+%   &VS3D\cite{meng\2020ws3d} & Stereo + LiDAR  & Yaw from Image & 81.95 / 42.43 & 73.21 / 41.58 & 64.34 / 32.74 \\
+%   \hline
+(a) &VS3D~\cite{meng2020ws3d} & Pascal 3D & NYC Cars & & 74.5/40.32 & 66.71/37.36 & 57.55/31.09 \\
+\hline
+(b) &Zakharov et al. \cite{sdflabel} & KITTI & KITTI &  & 77.84/62.25 & 59.75/42.23 & -/- \\
+% Cremers paper here?
+% (c) &\textbf{ours} &MS-COCO & &  & \textbf{80.73±2.64}/\textbf{76.73±2.4} & \textbf{81.70±1.29}/\textbf{76.66±1.23} & \textbf{73.61±1.11}/\textbf{69.01±1.03} \\
+\hline
+(c) &\textbf{ours} &MS-COCO & &  & \multirowcell{2}{\textbf{80.73}±2.64/\\ \textbf{76.73}±2.4} & \multirowcell{2}{\textbf{81.70}±1.29/\\ \textbf{76.66}±1.23} & \multirowcell{2}{\textbf{73.61}±1.11/\\ \textbf{69.01}±1.03} \\
+\\
+\hline
+(d) &\textit{Frus.PointNet~\cite{qi2017frustum} }     & \textit{KITTI} & \textit{KITTI} & \textit{KITTI} & \textit{98.25/98.10} & \textit{94.92/94.31} & \textit{87.14/86.48} \\
+\bottomrule
+\end{tabular}
+\caption{Object Detection Average-Precision on the Kitti validation set. Compared to our Method VS3D\cite{meng2020ws3d} uses a network trained on Pascal 3D and NYC 3D Cars\cite{xiang_wacv14, MatzenICCV13} to determine the object Yaw and 2D box, while while Zakharov\cite{sdflabel} only considers MASK R-CNN detections with an IOU > $50\%$ compared to a ground truth box and uses a synthetic dataset to train a network which gives yaw. We provide a 95\% confidence interval for our results using a variety of seeds. }\label{t:averageprecision}
+\end{table*}

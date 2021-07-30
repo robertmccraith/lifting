@@ -1,0 +1,36 @@
+\begin{table*}[t]
+\newcommand{\zero}{ZERO}
+\centering
+\setlength{\tabcolsep}{1mm}
+\begin{tabular}{cc c c c  c c c}
+\toprule
+&\multirow{3}{*}{Method} & \multicolumn{3}{c}{Annotations Source} & \multicolumn{3}{c}{AP\textsubscript{BEV}~/~AP\textsubscript{3D} (IoU = 0.5)} \\
+&& \textbf{2D} & \multicolumn{2}{c}{\textbf{3D}}  \\
+&& Boxes & Yaw & Boxes & Easy & Moderate & Hard \\
+\cmidrule(r){1-2}
+\cmidrule(lr){3-3}
+\cmidrule(lr){4-5}
+\cmidrule(l){6-8}
+
+(a) &VS3D~\cite{meng2020ws3d} & Pascal 3D & NYC Cars & & 74.5/40.32 & 66.71/37.36 & 57.55/31.09 \\
+\hline
+(b) &Zakharov et al. \cite{sdflabel} & KITTI & KITTI &  & 77.84/62.25 & 59.75/42.23 & -/- \\
+% Cremers paper here?
+% (c) &\textbf{ours} &MS-COCO & &  & \textbf{80.73±2.64}/\textbf{76.73±2.4} & \textbf{81.70±1.29}/\textbf{76.66±1.23} & \textbf{73.61±1.11}/\textbf{69.01±1.03} \\
+\hline
+(c) &\textbf{ours} &MS-COCO & &  & 80.73/ 76.73 & 81.70/76.66 & 73.61/69.01 \\
+
+% (d) &\textbf{ours} &MS-COCO & KITTI GT &  & & & \\
+
+(e) &\textbf{ours} & Cityscapes & &  & \textbf{86.51}/ \textbf{81.47} & \textbf{84.36}/\textbf{75.49} & \textbf{75.49}/\textbf{68.30} \\
+
+% (f) &\textbf{ours} & Cityscapes & KITTI GT &  & & & \\
+% \textbf{86.51}/ \textbf{81.47} & \textbf{84.36}/\textbf{75.49} & \textbf{75.49}/\textbf{68.30} \\
+
+\hline
+(g) &\textit{Frus.PointNet~\cite{qi2017frustum} }     & \textit{KITTI} & \textit{KITTI} & \textit{KITTI} & \textit{98.25/98.10} & \textit{94.92/94.31} & \textit{87.14/86.48} \\
+\bottomrule
+\end{tabular}
+\caption{Object Detection Average-Precision on the Kitti validation set. Compared to our Method VS3D\cite{meng2020ws3d} uses a network trained on Pascal 3D and NYC 3D Cars\cite{xiang_wacv14, MatzenICCV13} to determine the object Yaw and 2D box, while while Zakharov\cite{sdflabel} only considers MASK R-CNN detections with an IOU > $50\%$ compared to a ground truth box and uses a synthetic dataset to train a network which estimates orientation. Using Mask R-CNN trained on Cityscapes\cite{cordts16the-cityscapes} instead of the more generic MS-COCO dataset allows us to reduce the number of false positives. }\label{t:averageprecision_supp}
+\end{table*}
+

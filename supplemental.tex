@@ -1,0 +1,58 @@
+\documentclass[]{article}
+\usepackage[nonatbib]{neurips_2021}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{courier}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{makecell}
+\usepackage{microtype}
+\usepackage{multirow,makecell}
+\usepackage{nicefrac}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{xcolor,colortbl}
+\usepackage{pgfplots}
+\input{vedaldi}
+\pgfplotsset{compat=1.17}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% No space paragraph.
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}%
+  %{\z@}{3.25ex \@plus 1ex \@minus .2ex}{-1em}%
+  {\z@}{0em}{-1em}%
+  {\normalfont\normalsize\bfseries}%
+}
+
+\title{Lifting 2D Object Locations to 3D by Discounting LiDAR Outliers across Objects and Views (Supplementary Material)}
+
+\begin{document}
+
+%\maketitle
+
+
+\section{Additional Results}
+In table \ref{t:averageprecision_supp} we provide results for our method with the Mask R-CNN detector trained on the more application-specific Cityscapes\cite{cordts16the-cityscapes} dataset. In particular, running Cityscapes-trained detector on KITTI validation set produces approximately $12000$ detections, whereas COCO-trained detector yields almost $15600$ detections, many of which are of a general vehicle class and not annotated as cars in KITTI. This has advantages at training time, as our network's capacity is not used to attempt fitting non-car objects and also at test time, as we get a lower false positive rate, which results in an overall higher performance.
+
+We also provide additional qualitative examples in figure \ref{f:Qualitative_supp}. In (a,i,l)e of these images we observe cars predicted in green which are not annotated in red, some of this can be attributed to KITTI's particular classification of an object to a non-car vehicle category. In other cases (l) we see cars annotated further away which are annotated in future frames (m), implying issues with KITTI not annotating every car all the time. Two images (c,j) also contain trailers which COCO trained Mask R-CNN detected as cars. KITTI annotates about 3000 examples for each difficulty category with some sequences having annotations frame by frame, some every second frame and other sequences not containing many annotations which may make some detection errors more prominent than others if the number of annotated frames where an object erroneously detected are denser.
+
+\input{tables/supp_quant}
+
+
+\input{figures/Qualitative_examples/qual_supp}
+
+
+{\small \bibliographystyle{plain}\bibliography{mccraith_g,vedaldi_general,vedaldi_specific, insafutdinov}}
+
+\end{document}

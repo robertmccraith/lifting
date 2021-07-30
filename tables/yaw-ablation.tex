@@ -1,0 +1,21 @@
+\begin{table}
+\centering
+\begin{tabular}{c l c c c  c c c  }
+\toprule
+   &\multirow{2}{*}{Paradigm}                                 & \multicolumn{3}{c}{AP\textsubscript{BEV}(IoU = 0.5)} & \multicolumn{3}{c}{AP\textsubscript{3D}(IoU = 0.5)} \\
+   &                                                          & Easy                                                 & Moderate                                              & Hard           & Easy           & Moderate       & Hard \\
+\cmidrule(lr){2-2}
+\cmidrule(lr){3-5}
+\cmidrule(lr){6-8}
+(a)& arctan                                             & 76.65                                                & 79.05                                                 & 69.33          & 74.85          & 75.36          & 65.81 \\
+(b)&Insafutdinov \& Dosovitskiy~\cite{insafutdinov18pointclouds} & 77.28                                                & 76.92                                                 & 69.12          & 70.18          & 70.22          & 61.54 \\
+(c)&Goel et al.~\cite{goel20shape}                            & 76.49                                                & 77.35                                                 & 69.69          & 68.43          & 69.62          & 62.83\\
+\midrule
+(d)&Ours, 16 bins       & 77.04                & 77.30              & 69.49          & 65.42          & 66.78          & 59.72 \\
+(e)&Ours, 32 bins       & 79.93                & 81.14              & 73.15          & 74.96          & 75.53          & 68.11 \\
+(f)&Ours, 64 bins       & \textbf{80.07}       & \textbf{82.23}     & \textbf{74.1} & \textbf{78.48} & \textbf{77.63} & \textbf{69.90} \\
+(g)&Ours, 128 bins      & 81.79                & 82.23              & 74.11          & \textbf{78.49} & \textbf{77.68} & \textbf{69.86} \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of yaw prediction techniques.}\label{t:yaw}
+\end{table}

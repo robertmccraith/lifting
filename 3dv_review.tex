@@ -1,0 +1,82 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{3dv}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}
+
+
+%\threedvfinalcopy % *** Uncomment this line for the final submission
+
+\def\threedvPaperID{****} % *** Enter the 3DV Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifthreedvfinal\pagestyle{empty}\fi
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Weakly-supervised Scene-Aware 3D Object Detection in Point Clouds}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+
+\maketitle
+% \thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+We present a system for automatic converting of 2D mask object predictions and raw LiDAR point clouds into full 3D bounding boxes of objects.
+Because the LiDAR point clouds are partial, directly fitting bounding boxes to the point clouds is meaningless.
+Instead, we suggest that obtaining good results requires sharing information between \emph{all} objects in the dataset jointly, over multiple frames.
+We then make three improvements to the baseline.
+First, we address ambiguities in predicting the object rotations via direct optimization in this space while still backpropagating rotation prediction through the model.
+Second, we explicitly model outliers and task the network with learning their typical patterns, thus better discounting them.
+Third, we enforce temporal consistency when video data is available.
+With these contributions, our method significantly outperforms previous work despite the fact that these use significantly more complex pipelines, 3D models and additional human-annotated external sources of prior information.
+% We propose a new direct optimization of the object rotations, fixing the ambiguity of the rotation estimation.
+% Localising objects in 3D is a fundamental requirement of many robotic systems. This task requires a large amount of annotated training data which is expensive to obtain and of questionable accuracy for some objects. In contrast 2D annotations are much simpler to obtain and train as has been shown in many recent works. In this work we propose a method which allows the use of a pre-trained 2D instance segmentation network to train a 3D object detection network without the need for expensive 3D annotations. The main contributions of our method are as follows: 1) automatic segmentation of raw LiDAR data by learning to remove outlier points during training 2) novel training scheme that avoids local optima in viewpoint estimation 3) learning across multiple frames that enforces temporal consistency of the scene. Our method significantly outperforms previous yet more complex methods while also requiring less supervision for training.
+%The method automatically segments raw LiDAR data by learning to remove outlier points during training and by combining it with novel training scheme which avoids local optima and with enforcing scene consistency between multiple frames, the method significantly outperforms previous yet more complex methods.
+\end{abstract}
+
+
+
+
+\input{intro}
+\input{related}
+\input{method}
+\input{experiments}
+\input{conclusions}
+
+
+
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{mccraith_g,vedaldi_general,vedaldi_specific}
+}
+
+
+\end{document}
