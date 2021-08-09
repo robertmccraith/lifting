@@ -28,10 +28,12 @@ Confidence: 4: You are confident in your assessment, but not absolutely certain.
 2) the tracking is based on a simple comparison of the median of X,Y,Z values of lidar points in each frame for each detection, a threshold is then applied to ensure the distance travelled between frames is reasonable. Challenging scenarious were not accounted for as our interest in tracking is only needed for training time and at test time a single frame is used for predictions
 3) Part of the gap in performance comes from the general nature of Mask RCNN trained on COCO instead of on a driving dataset where cars are more prominant. This was used for comprability to the existing works and indeed when Mask RCNN trained on Cityscapes is used the performance increases 
 ```
-| data | Center aligned | Center aligned | Center aligned | 
+2D detection results with different Mask RCNN train sets
+| data | Easy | Medium | Hard | 
 |------|:--------------:|:--------------:|:--------------:|
 | COCO | 0.9017	| 0.8766	| 0.8006 |
 |Cityscapes | 0.9253  |	0.9072 |	0.7911 |
+I believe that KITTI will still evaluate a car in BEV/3D if it's 2D detection is bad
 ```
 4)
 5) 
