@@ -24,9 +24,12 @@ Rating: 5: Marginally below the acceptance threshold\
 Confidence: 4: You are confident in your assessment, but not absolutely certain. It is unlikely, but not impossible, that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work.
 
 ```
-1)
-2) the tracking is based on a simple comparison of the median of X,Y,Z values of lidar points in each frame for each detection, a threshold is then applied to ensure the distance travelled between frames is reasonable. Challenging scenarious were not accounted for as our interest in tracking is only needed for training time and at test time a single frame is used for predictions
-3) Part of the gap in performance comes from the general nature of Mask RCNN trained on COCO instead of on a driving dataset where cars are more prominant. This was used for comprability to the existing works and indeed when Mask RCNN trained on Cityscapes is used the performance increases 
+
+1) The auto-labelling algorithm requires the 2D detection/segmentation to be at least approximately successful. However, rather than being a limitation, this mechanism allows to detect/annotate instances for which both 2D appearance and 3D point cloud are in agreement. In this manner, while some instances can be missed, the ones that are found are more reliable.
+
+2) The tracking is based on a simple comparison of the median of X,Y,Z values of LiDAR points in each frame for each detection, a threshold is then applied to ensure the distance travelled between frames is reasonable. Challenging scenarios do not need to be always handled successfully because the aim is to obtain reliable annotations -- while we aim at annotating correctly as many instances as possible, skipping over a few "difficult" ones is acceptable -- tracking is only needed for training time and at test time a single frame is used for predictions.
+
+3) Part of the gap in performance comes from the general nature of Mask RCNN trained on COCO instead of on a driving dataset where cars are more prominent. This was used for compatibility to the existing works and indeed when Mask R-CNN trained on Cityscapes is used the performance increases
 ```
 2D detection results with different Mask RCNN train sets
 | data | Easy | Medium | Hard | 
@@ -36,7 +39,7 @@ Confidence: 4: You are confident in your assessment, but not absolutely certain.
 I believe that KITTI will still evaluate a car in BEV/3D if it's 2D detection is bad
 ```
 4)
-5) 
+5) We thank the reviewer for the detailed feedback on the polish and will carefully proof-read the paper and fix the typos and citations when needed.
 ```
 ---
 
@@ -70,11 +73,17 @@ Rating: 4: Ok but not good enough - rejection\
 Confidence: 4: You are confident in your assessment, but not absolutely certain. It is unlikely, but not impossible, that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work.
 
 ```
-1) In this work we ask the question of whether or not we can use 2D information to better understand the world in 3D. Datasets such as COCO provide annotations for a wide variety of object types in 2D and while other datasets exist for detection in 3D many objects that are well understood in the image domain are not represented in 3D datasets. To this end we take a genericly trained 2D detector and explore it's usefulness in training a network that takes as input 3D information (in this case point clouds)
-2) It is true that multi-frame methods are incapable of reasoning in static camera scenarious, however we can remove such sequences as we have access to the camera extrinsics, a trick which is also employed in monocular depth papers, the Eigen-Zhou split of KITTI for example removes frames where the ego-vehicle is stationary which would cause such methods to fail. In our case teh ego cameras lack of motion is not so much an impedement, as the removal of ego motion from the locaiton difference means we just check that the predicted location has not changed significantly with the fluctuation in the LiDAR points locations between frames.
+1) In this work we ask the question of whether or not we can use 2D information to better understand the world in 3D. Datasets such as COCO provide annotations for a wide variety of object types in 2D and while other datasets exist for detection in 3D many objects that are well understood in the image domain are not represented in 3D datasets. To this end we take a genericly trained 2D detector and explore it's usefulness in training a network that takes as input 3D information (in this case point clouds) [MENTION DIFFIUCLTY OF ANNOTATING STUFF IN 3D]
+
+2) Our method does not break if the scene is static: if there is no motion, the dynamic consistency check still passes; it is just less informative/selective than if there is motion.
+
+<!--It is true that multi-frame methods are incapable of reasoning in static camera scenarious, however we can remove such sequences as we have access to the camera extrinsics, a trick which is also employed in monocular depth papers, the Eigen-Zhou split of KITTI for example removes frames where the ego-vehicle is stationary which would cause such methods to fail. In our case the ego cameras lack of motion is not so much an impediment, as the removal of ego motion from the locaiton difference means we just check that the predicted location has not changed significantly with the fluctuation in the LiDAR points locations between frames.-->
+
+3) As we shown in the supplementary material, if the 2D detector (Mask R-CNN) is trained on Cityscapes rather than the more generic COCO, then the 3D detection performance shoots up to 86%, which is very comparable to fully-supervised methods (~90%). We will update the main paper with this result.
+
 ```
 ### 3) train supervised method on auto-labels, perhaps expand training set with GT + auto-labels on other frames
-### 4) train on other object classes?
+4) We would like to note that the main prior works on auto-labeling without 3D supervision [].
 ---
 
 # R3
@@ -83,8 +92,11 @@ This paper proposes to convert 2D mask by running MASK RCNN and raw LIDAR point 
 
 ## Main Review:
 1) This paper proposes to convert 2D mask by running MASK RCNN and raw LIDAR point clouds to 3D bounding box. However, the process of predicting the 2D mask itself will introduce a lot of outliers, because the 2D mask is not so close to the object. Because the mask is not like a segmented area, it is always inevitable that outliers will be introduced. However, if you use the segmented area and perform the following process, you may avoid the problems raised in the paper. Moreover, in the network structure proposed in the text, the step of implementing point cloud segmentation is yet to come. This step can be removed after the segmentation of the image domain is introduced. Therefore, the reasoning process proposed in the article of using a 2D mask, projecting to a 3D space, and then designing related algorithms to remove outliers is inherently problematic.
+
 2) One of the motivations of the method proposed in this paper is that the labeling process in the collection of data sets is time-consuming and laborious, and a large application of the method in this paper is obviously also in the data labeling process. So what is the result of applying the method in this paper to data annotation? Compared with the equivalent human labeling, what are the relevant results? And we know that in the process of data labeling, there are often errors in the labeling. There are also errors in Figure 1 and Figure 2 in the supplementary materials. So how to deal with this error situation? Discussion on this part should be given.
+
 3) Experimental part. First, in Table 3, the article shows the results on the KITTI verification set. For the KITTI data set, the more convincing result should be the test set. Why don't you conduct experiments on the test set? Second, there are too few comparison methods on the one hand. On the other hand, the annotation resources used in the experiments and comparison methods in this article are not so consistent, so direct comparison of the results is not so fair.
+
 4) The data set that the method proposed in this paper relies on is largely a video data set with continuous frames. We know that in the application of autonomous driving, sometimes it is not possible to obtain very continuous video data, often in very short segments, so what is the minimum number of frames required for the method in this article to work? In addition, for the autonomous driving data set, the number of Waymo data sets is many times that of KITTI. So what is the result of the method in this paper on a large data set like Waymo? This paper only does an experiment on the KITTI data set, which is obviously not enough.
 
 
@@ -94,11 +106,16 @@ Confidence: 5: You are absolutely certain about your assessment. You are very fa
 
 
 ```
-1) if the reviewer refers to segmentation in the image then one would expect that Mask RCNN outputs would perform similar to a semantic segmentation network while also having instance labels which are important for our task. If the segmentation mentioned is of the 3D points then we do not know of any methods that can segment pointclouds without supervision from a human annotated 3D box. In place of segmentation we introduce uncertanty estimates for each lidar point where points which are on the surface of the target car should recieve a low values and those far away a high value. In papers such as [18] the LiDAR points are segemnted based on their proximity to an anchor but in this work the anchors are 3D boxes all oriented parallel to the Z axis of the camera, making them less useful to precisely predict the location in 3D as many points are lost in the case of a car with very different orientation, they require yaw supervision to overcome this issue which we do not.
+1) If we understand the suggestion correctly, we should use a 3D point cloud segmentation network in order to better identify the 3D points that belong to an object. However, obtaining such a network is non-trivial and, in general, requires 3D supervision, which we aim to avoid. On the other hand, our network is able to automatically learn to discount 3D outliers as highly-uncertain, thus obtainining "for free" some of the advantages of having a pre-trained 3D segmentation net.
+
+
+
+
+if the reviewer refers to segmentation in the image then one would expect that Mask RCNN outputs would perform similar to a semantic segmentation network while also having instance labels which are important for our task. If the segmentation mentioned is of the 3D points then we do not know of any methods that can segment pointclouds without supervision from a human annotated 3D box. In place of segmentation we introduce uncertanty estimates for each lidar point where points which are on the surface of the target car should recieve a low values and those far away a high value. In papers such as [18] the LiDAR points are segemnted based on their proximity to an anchor but in this work the anchors are 3D boxes all oriented parallel to the Z axis of the camera, making them less useful to precisely predict the location in 3D as many points are lost in the case of a car with very different orientation, they require yaw supervision to overcome this issue which we do not.
 ```
 ### 2) again train FPN on the generated labels
 ```
-3) The validation set is used for comprability to existing weakly-supervised works [18,43]. The mentioned papers are currently the only existing works on weakly-supervising 3D object detection on the KITTI dataset. We agree that the differing level of supervision makes comparison of this paper to existing methods difficult, we think however that it it noteworthy that our method requires the fewest supervision signals and achieves often vastly superior results to [18,43] who require knowledge of yaw in both cases and a wide variety of car models and synthesic scenery in [43]
+3) The validation set is used for comparability to existing weakly-supervised works [28,43]. The mentioned papers are currently the only existing works on weakly-supervising 3D object detection on the KITTI dataset. We agree that the differing level of supervision makes comparison of this paper to existing methods difficult, we think however that it it noteworthy that our method requires the fewest supervision signals and achieves often vastly superior results to [18,43] who require knowledge of yaw in both cases and a wide variety of car models and synthetic scenery in [43]
 4) In our work we track for up to 5 frames which gives us several thousand detected vehicles with an often wide baseline between frames as the car is typically moving at a moderate pace. As KITTI only has front facing cameras getting views of an object from wildly different viewpoints is unlikely as many move out of frame relatively quickly. 
 (1,2,3) below 
 ```
